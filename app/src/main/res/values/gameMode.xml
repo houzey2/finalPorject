@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="game_choices">
+        <item>Easy: 5 mines</item>
+        <item>Medium: 10 mines</item>
+        <item>Hard: 15mines</item>
+    </string-array>
+</resources>
