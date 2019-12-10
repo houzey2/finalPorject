@@ -1,12 +1,17 @@
 package com.example.minesweeper;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
+import android.widget.Button;
+
 
 import java.util.Random;
 
-public class Map {
+
+public class Map{
     private int mineNum;
     private Fill[][] map;
     private int length;
@@ -20,8 +25,6 @@ public class Map {
     public int mapSize;
     private boolean gameFinish = false;
     private int wrongTimes = 0;
-
-
 
     public Map(final int setMineNum, final int width, final int height) {
         this.length = 8;
@@ -52,11 +55,14 @@ public class Map {
 
 
 
+
+
         // generate mines
         Random x = new Random();
         Random y = new Random();
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
+
                 Fill input = new Fill();
                 map[i][j] = input;
             }
@@ -64,7 +70,11 @@ public class Map {
         for (int i = 0; i <= setMineNum - 1; i++) {
             int xCon = x.nextInt(length - 1);
             int yCon = y.nextInt( length - 1);
-            map[yCon][xCon].setMine();
+            if (!map[yCon][xCon].getMine()) {
+                map[yCon][xCon].setMine();
+            } else {
+                i--;
+            }
         }
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {

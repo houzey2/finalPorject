@@ -1,5 +1,6 @@
 package com.example.minesweeper;
 
+
 public class Fill {
     private boolean mine = false;
     // number of mines around it. if the fill is a mine, num = -1.

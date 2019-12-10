@@ -1,5 +1,6 @@
 package com.example.minesweeper;
 
+import android.os.Vibrator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+
+
 
 public class gameLogic extends View {
     private Map gameMaps;
@@ -38,7 +41,7 @@ public class gameLogic extends View {
         length = gameMaps.getLength();
         x = gameMaps.getX();
         y = gameMaps.getY();
-        mP= MediaPlayer.create(context,R.raw.hyl);
+        mP= MediaPlayer.create(context,R.raw.back);
         mP.setLooping(true);
         mP.start();
     }
@@ -46,6 +49,10 @@ public class gameLogic extends View {
     public void judgement() {
         if (gameMaps.getFlagNum() == gameMaps.getMineNum()) {
             gameMaps.setGameState(true);
+            mP.stop();
+            MediaPlayer mediaPlayer= MediaPlayer.create(context,R.raw.win);
+            mediaPlayer.setVolume(200,200);
+            mediaPlayer.start();
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setCancelable(false);
             builder.setMessage("Congratulations, you win!");
@@ -88,6 +95,8 @@ public class gameLogic extends View {
                         } else {
                             gameMaps.wrongChoice();
                             invalidate();
+                            MediaPlayer mediaPlayer= MediaPlayer.create(context,R.raw.no);
+                            mediaPlayer.start();
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setCancelable(true);
                             builder.setMessage("This grid is empty! HaHaHa!");
@@ -100,8 +109,9 @@ public class gameLogic extends View {
                         gameMaps.setGameState(true);
                         invalidate();
                         mP.stop();
-                        MediaPlayer mediaPlayer= MediaPlayer.create(context,R.raw.aihe);
+                        MediaPlayer mediaPlayer = MediaPlayer.create(context,R.raw.lose);
                         mediaPlayer.start();
+                        gameLogic.vibrateDevice(context);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setCancelable(false);
                         builder.setMessage("You made too many mistakes, Failed!");
@@ -127,8 +137,9 @@ public class gameLogic extends View {
                             gameMaps.setGameState(true);
                             invalidate();
                             mP.stop();
-                            MediaPlayer mediaPlayer= MediaPlayer.create(context,R.raw.aihe);
+                            MediaPlayer mediaPlayer= MediaPlayer.create(context,R.raw.boom);
                             mediaPlayer.start();
+                            gameLogic.vibrateDevice(context);
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setCancelable(false);
                             builder.setMessage("You Died!");
@@ -150,5 +161,11 @@ public class gameLogic extends View {
             }
         }
         return true;
+    }
+    public static void vibrateDevice(Context context) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        v.vibrate(1000);
+        System.out.println("ok");
     }
 }
